@@ -1,6 +1,42 @@
-# Privacy-First RAG Pipeline (Multicultural LLM)
+# RAG Pipeline for Multicultural LLM
 
-This folder contains a privacy-first Retrieval-Augmented Generation (RAG) pipeline for breast cancer education content. It follows the implementation plan and **excludes personal stories** from the index.
+## Quick Start
+
+### 1. Data Setup
+
+**Download the dataset** from [Google Drive](https://drive.google.com/drive/folders/15ApysYrGPHzfXsLnPJ0tRL4qYC0oE0_b?usp=sharing) and place the files in:
+
+```
+multicultural_llm/data/raw/
+```
+
+The training materials should be in DOCX or TXT format. Personal stories or files you want to exclude should go in `data/excluded/`.
+
+### 2. Install Dependencies
+
+```bash
+pip install -r requirements.txt
+
+# Set your OpenAI API key
+export OPENAI_API_KEY='your-api-key-here'
+```
+
+### 3. Process Data and Build Index
+
+```bash
+python src/ingest.py && python src/chunking.py && python src/embed_index.py
+```
+
+### 4. Run the Gradio UI
+
+```bash
+python src/gradio_app.py
+```
+
+Or query from command line:
+```bash
+python src/rag_answer.py
+```
 
 ## Structure
 
@@ -45,15 +81,3 @@ multicultural_llm/
 Run the Gradio app:
 
 - `python src/gradio_app.py`
-
-## API (Optional)
-
-Run the API server:
-
-- `uvicorn src.api:app --reload`
-
-POST to `/answer` with JSON:
-
-```json
-{"question": "What happens during a mammogram?", "use_rag": true}
-```
