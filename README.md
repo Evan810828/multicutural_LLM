@@ -81,3 +81,44 @@ multicultural_llm/
 Run the Gradio app:
 
 - `python src/gradio_app.py`
+
+## Batch Inference for Case Study
+
+Run batch inference on a CSV file of testing questions to compare static LLM vs RAG responses:
+
+```bash
+python src/batch_inference.py --input data/test_questions.csv --output results/case_study.csv
+```
+
+### Input CSV Format
+
+The input CSV must contain a `question` column. Optional columns:
+- `question_id`: Unique identifier for each question
+- Any other metadata columns you want to preserve
+
+The `question` column should contain the full user query, including any background information or context the user provides.
+
+Example:
+```csv
+question_id,question
+1,"What happens during a mammogram?"
+2,"I'm a 45-year-old woman and my mother had breast cancer. Should I get screened more often?"
+```
+
+### Output CSV
+
+The output CSV includes all original columns plus:
+- `static_response`: Response from static LLM (no RAG context)
+- `rag_response`: Response from RAG-augmented LLM
+- `rag_sources`: Retrieved source documents (semicolon-separated)
+
+### Command Line Options
+
+```bash
+python src/batch_inference.py --help
+
+Options:
+  --input, -i     Path to input CSV file (required)
+  --output, -o    Path to output CSV file (default: results/case_study_YYYYMMDD_HHMMSS.csv)
+  --quiet, -q     Disable progress bar
+```
